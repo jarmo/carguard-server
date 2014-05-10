@@ -2,6 +2,7 @@ require "sinatra"
 require "haml"
 require "multi_json"
 require "sass"
+require "bootstrap-sass"
 
 set :bind, "0.0.0.0"
 set :port, 8010
