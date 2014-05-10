@@ -1,0 +1,20 @@
+!!!
+
+%html
+  %head
+    %link(rel="stylesheet" type="text/css" href="/styles.css")
+    %script(type="text/javascript" src="//maps.googleapis.com/maps/api/js?key=AIzaSyB1KCxChPZeai0CFriGB42mXUIh5jrUi_o&sensor=false")
+    %script(type="text/javascript" src="//underscorejs.org/underscore-min.js")
+    %script(type="text/javascript" src="//code.jquery.com/jquery-2.1.1.min.js")
+    %script(type="text/javascript" src="/car_watcher.js")
+
+    :javascript
+      $(function() { new CarWatcher(#{MultiJson.dump @locations}).render() })
+
+  %body
+    #map
+    #locations
+      %ul
+      - @locations.each_with_index do |location, i|
+        %li
+          %a.location(href="#" data-index="#{i}")= "#{Time.at(location[:time] / 1000)} - #{location[:latitude]}, #{location[:longitude]}"
