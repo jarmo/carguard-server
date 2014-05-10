@@ -13,11 +13,13 @@ var CarWatcher = function(locations) {
 
     $(".location").on("click", function(event) {
       event.preventDefault()
-      bounce(markers[$(event.target).data("index")])
+      bounce(map, markers[$(event.target).data("index")])
     })
   }
 
   function addRoute(map, locations) {
+    if (!locations.length) return
+
     var markers = _(locations).chain().select(function(location) {
       return location.time >= new Date().getTime() - 48 * 60 * 60 * 1000
     }).map(function(location, i) {
@@ -27,6 +29,10 @@ var CarWatcher = function(locations) {
         title: JSON.stringify(_(location).extend({time: new Date(location.time)}))
       })
     }).value()
+    
+    _(markers).last().setIcon({
+      url: "http://mt.googleapis.com/vt/icon/name=icons/spotlight/spotlight-poi.png&scale=1.3"
+    });
 
     renderMarkers(map, markers, 0)
 
@@ -44,8 +50,9 @@ var CarWatcher = function(locations) {
     }, 500)
   }
 
-  function bounce(marker) {
+  function bounce(map, marker) {
+    map.panTo(marker.getPosition())
     marker.setAnimation(google.maps.Animation.BOUNCE)
-    setTimeout(function() { marker.setAnimation(null) }, 2000)
+    setTimeout(function() { marker.setAnimation(null) }, 3000)
   }
 }
