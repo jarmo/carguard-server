@@ -8,7 +8,7 @@ set :bind, "0.0.0.0"
 set :port, 8010
 
 use Rack::Auth::Basic, "Oh no, you don't!" do |username, password|
-  username == 'car' and password == 'watcher'
+  username == 'car' and password == 'guard'
 end
 
 post "/" do

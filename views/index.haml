@@ -6,10 +6,10 @@
     %script(type="text/javascript" src="//maps.googleapis.com/maps/api/js?key=AIzaSyB1KCxChPZeai0CFriGB42mXUIh5jrUi_o&sensor=false")
     %script(type="text/javascript" src="//underscorejs.org/underscore-min.js")
     %script(type="text/javascript" src="//code.jquery.com/jquery-2.1.1.min.js")
-    %script(type="text/javascript" src="/car_watcher.js")
+    %script(type="text/javascript" src="/car_guard.js")
 
     :javascript
-      $(function() { new CarWatcher(#{MultiJson.dump @locations}).render() })
+      $(function() { new CarGuard(#{MultiJson.dump @locations}).render() })
 
   %body
     #map

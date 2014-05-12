@@ -1,4 +1,4 @@
-var CarWatcher = function(locations) {
+var CarGuard = function(locations) {
 
   this.render = function() {
     var latestLocation = locations[0] && {lat: locations[0].latitude, lng: locations[0].longitude}
