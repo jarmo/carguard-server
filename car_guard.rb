@@ -7,11 +7,7 @@ require "bootstrap-sass"
 set :bind, "0.0.0.0"
 set :port, 8010
 
-use Rack::Auth::Basic, "Oh no, you don't!" do |username, password|
-  username == 'car' and password == 'guard'
-end
-
-post "/" do
+post "/map/:api_key" do
   response = MultiJson.load(request.body.read, symbolize_keys: true)
   response.merge!(
     latitude: response[:latitude].to_f,
@@ -20,14 +16,15 @@ post "/" do
     speed: response[:speed].to_f
   )
 
-  locations = saved_locations << response
+  locations = saved_locations
+  locations[params[:api_key].to_sym] << response
   File.open("locations.txt", "w") { |f| f.puts MultiJson.dump(locations, pretty: true) }
 
   "ok"
 end
 
-get "/" do
-  @locations = saved_locations
+get "/map/:api_key" do
+  @locations = saved_locations[params[:api_key].to_sym].sort_by {|i| i[:time] }
   haml :index
 end
 
@@ -36,5 +33,9 @@ get "/styles.css" do
 end
 
 def saved_locations
-  File.exists?("locations.txt") ? MultiJson.load(File.read("locations.txt"), symbolize_keys: true).sort_by {|i| i[:time] } : []
+  locations = File.exists?("locations.txt") ? MultiJson.load(File.read("locations.txt"), symbolize_keys: true) : {}
+  locations.default_proc = proc do |hash, key|
+    hash[key] = []
+  end
+  locations
 end
