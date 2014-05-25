@@ -43,7 +43,9 @@ var EncryptedLocations = {
     function askForPassword() {
       var dfd = $.Deferred()
       alertify.prompt("Find the car", function(ok, password) {
-        ok ? dfd.resolve(password.trim()) : dfd.reject()
+        _.defer(function() {
+          ok ? dfd.resolve(password.trim()) : dfd.reject()
+        })
       }, "enter secret");
 
       return dfd;
