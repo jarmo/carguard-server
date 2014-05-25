@@ -10,13 +10,7 @@ set :port, 8010
 LOCATIONS_FILE_NAME = "locations.json"
 
 post "/map/:api_key" do
-  response = MultiJson.load(request.body.read, symbolize_keys: true)
-  response.merge!(
-    latitude: response[:latitude].to_f,
-    longitude: response[:longitude].to_f,
-    distance: response[:distance].to_f,
-    speed: response[:speed].to_f
-  )
+  response = MultiJson.load(request.body.read, symbolize_keys: true).merge(created: (Time.now.to_f * 1000).to_i)
 
   locations = saved_locations
   locations[params[:api_key].to_sym] << response

@@ -1,5 +1,4 @@
 var CarGuard = function(locations) {
-
   this.render = function() {
     var latestLocation = locations[0] && {lat: locations[0].latitude, lng: locations[0].longitude}
 
@@ -11,28 +10,38 @@ var CarGuard = function(locations) {
     var map = new google.maps.Map($("#map")[0], mapOptions)
     var markers = addRoute(map, locations)
 
-    $(".location").on("click", function(event) {
+    $("#locations").on("click", ".location", function(event) {
       event.preventDefault()
-      bounce(map, markers[$(event.target).data("index")])
+      bounce(map, $(event.target).closest("li").data("marker"))
     })
   }
 
   function addRoute(map, locations) {
     if (!locations.length) return
 
-    var markers = _(locations).chain().select(function(location) {
-      return location.time >= new Date().getTime() - 48 * 60 * 60 * 1000
-    }).map(function(location, i) {
-      return new google.maps.Marker({
-        position: {lat: location.latitude, lng: location.longitude},
-        animation: google.maps.Animation.DROP,
-        title: JSON.stringify(_(location).extend({time: new Date(location.time)}))
+    var markers = _(locations).chain()
+      .select(function(location) {
+        return location.fixTime >= new Date().getTime() - 48 * 60 * 60 * 1000
       })
-    }).value()
+      .sortBy(function(location) {
+        return location.fixTime
+      })
+      .map(function(location, i) {
+        return new google.maps.Marker({
+          position: {lat: location.latitude, lng: location.longitude},
+          animation: google.maps.Animation.DROP,
+          title: JSON.stringify(_(location).extend({fixTime: new Date(location.fixTime)})),
+          location: location
+        })
+      }).value()
     
-    _(markers).last().setIcon({
-      url: "http://mt.googleapis.com/vt/icon/name=icons/spotlight/spotlight-poi.png&scale=1.3"
-    });
+    var lastMarker = _(markers).last()
+
+    if (lastMarker) {
+      lastMarker.setIcon({
+        url: "http://mt.googleapis.com/vt/icon/name=icons/spotlight/spotlight-poi.png&scale=1.3"
+      });
+    }
 
     renderMarkers(map, markers, 0)
 
@@ -46,6 +55,7 @@ var CarGuard = function(locations) {
 
       map.panTo(marker.getPosition())
       marker.setMap(map)
+      $("#locations ul").append($("<li>").addClass("location").data("marker", marker).append($("<a>").attr("href", "#").text(new Date(marker.location.fixTime) + " - " + marker.location.latitude + ", " + marker.location.longitude)))
       renderMarkers(map, markers, ++index)
     }, 500)
   }
