@@ -11,10 +11,8 @@ var EncryptedLocations = {
         .require(generateKey).map(function(location) {
         try {
           var decrypted = JSON.parse(decrypt(location.salt, location.iv, global.env.password, location.data))
-        } catch (ignored) {
-          return;
-        }
-        return _({created: location.created}).extend(decrypted)
+          return _({created: location.created}).extend(decrypted)          
+        } catch (ignored) {}
       }).then(function(decryptedLocations) {
         _(decryptedLocations).compact().length ? dfd.resolve(decryptedLocations) : dfd.reject()
       })
