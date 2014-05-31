@@ -3,16 +3,21 @@ var EncryptedLocations = {
     var dfd = $.Deferred()
 
     askForPassword().done(function(password) {
-      var decryptedLocations = _(locations).map(function(location) {
+      new Parallel(locations, {evalPath: "/vendor/eval.js", maxWorkers: 8, env: {password: password}})
+        .require("/vendor/crypto-js/aes.js")
+        .require("/vendor/crypto-js/pbkdf2.js")
+        .require("//underscorejs.org/underscore-min.js")
+        .require(decrypt)
+        .require(generateKey).map(function(location) {
         try {
-          var decrypted = JSON.parse(decrypt(location.salt, location.iv, password, location.data))
-        } catch(e) {
-          return dfd.reject()
+          var decrypted = JSON.parse(decrypt(location.salt, location.iv, global.env.password, location.data))
+        } catch (ignored) {
+          return;
         }
         return _({created: location.created}).extend(decrypted)
+      }).then(function(decryptedLocations) {
+        _(decryptedLocations).compact().length ? dfd.resolve(decryptedLocations) : dfd.reject()
       })
-
-      dfd.resolve(decryptedLocations)
     })
 
     return dfd
