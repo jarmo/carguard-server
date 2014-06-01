@@ -1,0 +1,13 @@
+:javascript
+  $(function() { 
+    EncryptedLocations.decryptAll(#{MultiJson.dump @locations})
+      .done(function(locations) {
+        new CarGuard(locations).render()
+      }).fail(function() {
+        alertify.error("Sorry, wrong secret!")
+      })
+  })
+
+#map
+#locations
+  %ul

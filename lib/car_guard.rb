@@ -16,6 +16,14 @@ class CarGuard < Sinatra::Base
     register Sinatra::Reloader
   end
 
+  get "/" do
+    haml :index
+  end
+
+  post "/" do
+    saved_locations.has_key?(params[:api_key].to_sym) ? redirect(to("/map/#{params[:api_key]}")) : 404
+  end
+
   post "/map/:api_key" do
     response = MultiJson.load(request.body.read, symbolize_keys: true).merge(created: (Time.now.to_f * 1000).to_i)
 
@@ -28,7 +36,7 @@ class CarGuard < Sinatra::Base
 
   get "/map/:api_key" do
     @locations = saved_locations[params[:api_key].to_sym].sort_by {|i| i[:time] }
-    haml :index
+    haml :map
   end
 
   get "/car-guard.css" do

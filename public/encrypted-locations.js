@@ -45,11 +45,11 @@ var EncryptedLocations = {
 
     function askForPassword() {
       var dfd = $.Deferred()
-      alertify.prompt("Find the car", function(ok, password) {
+      alertify.prompt("Find your car", function(ok, password) {
         _.defer(function() {
           ok ? dfd.resolve(password.trim()) : dfd.reject()
         })
-      }, "enter secret")
+      }, "secret")
 
       return dfd
     }

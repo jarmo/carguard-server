@@ -1,32 +1,7 @@
-!!!
-
-%html
-  %head
-    %link(rel="stylesheet" type="text/css" href="/vendor/alertify/alertify.core.css")
-    %link(rel="stylesheet" type="text/css" href="/vendor/alertify/alertify.default.css")
-    %link(rel="stylesheet" type="text/css" href="/vendor/alertify/alertify.bootstrap.css")
-    %link(rel="stylesheet" type="text/css" href="/car-guard.css")
-    %script(type="text/javascript" src="//maps.googleapis.com/maps/api/js?key=AIzaSyB1KCxChPZeai0CFriGB42mXUIh5jrUi_o&sensor=false")
-    %script(type="text/javascript" src="//underscorejs.org/underscore-min.js")
-    %script(type="text/javascript" src="//code.jquery.com/jquery-2.1.1.min.js")
-    %script(type="text/javascript" src="/vendor/alertify/alertify.js")
-    %script(type="text/javascript" src="/vendor/crypto-js/aes.js")
-    %script(type="text/javascript" src="/vendor/crypto-js/pbkdf2.js")
-    %script(type="text/javascript" src="/vendor/parallel.js")
-    %script(type="text/javascript" src="/car-guard.js")
-    %script(type="text/javascript" src="/encrypted-locations.js")
-
-    :javascript
-      $(function() { 
-        EncryptedLocations.decryptAll(#{MultiJson.dump @locations})
-          .done(function(locations) {
-            new CarGuard(locations).render()
-          }).fail(function() {
-            alertify.error("Sorry, wrong secret!")
-          })
-      })
-
-  %body
-    #map
-    #locations
-      %ul
+.row
+  %form(action="/" method="POST")
+    .form-group
+      .col-md-10
+        %input.form-control.input-lg(type="text" name="api_key" placeholder="API key")
+      .col-md-2
+        %button.input-lg.btn.btn-default(type="submit") Track
