@@ -34,7 +34,7 @@ class CarGuard < Sinatra::Base
       where(
         api_key: params[:api_key],
         created_at: (Time.now - 2 * 24 * 60 * 60)..Time.now).
-      reverse_order(:created_at)
+      reverse_order(:created_at).to_json(except: :api_key)
 
     haml :map
   end
