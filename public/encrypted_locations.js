@@ -49,9 +49,9 @@ var EncryptedLocations = {
         _.defer(function() {
           ok ? dfd.resolve(password.trim()) : dfd.reject()
         })
-      }, "enter secret");
+      }, "enter secret")
 
-      return dfd;
+      return dfd
     }
   }
 }
