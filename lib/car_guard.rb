@@ -20,7 +20,7 @@ class CarGuard < Sinatra::Base
   end
 
   post "/map/:api_key" do
-    Location.create(JSON.parse(request.body.read))
+    Location.create(JSON.parse(request.body.read).merge(api_key: params[:api_key]))
 
     "ok"
   end
