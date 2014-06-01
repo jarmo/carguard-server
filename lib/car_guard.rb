@@ -21,7 +21,7 @@ class CarGuard < Sinatra::Base
   end
 
   post "/" do
-    saved_locations.has_key?(params[:api_key].to_sym) ? redirect(to("/map/#{params[:api_key]}")) : 404
+    saved_locations.has_key?(params[:api_key].to_sym) ? redirect(to("/map/#{params[:api_key]}")) : halt(404)
   end
 
   post "/map/:api_key" do
