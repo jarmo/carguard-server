@@ -8,10 +8,10 @@ Sequel::Model.plugin :json_serializer
 
 class Location < Sequel::Model
   set_schema do
-    String :api_key
-    String :data
-    String :iv
-    String :salt
+    String :api_key, null: false
+    String :data, null: false
+    String :iv, null: false
+    String :salt, null: false
     DateTime :created_at
 
     index :api_key
