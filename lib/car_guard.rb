@@ -1,3 +1,4 @@
+require "json"
 require "sinatra"
 require "haml"
 require "sass"
@@ -19,8 +20,7 @@ class CarGuard < Sinatra::Base
   end
 
   post "/map/:api_key" do
-    request_json = MultiJson.load(request.body.read)
-    Location.create(request_json)
+    Location.create(JSON.parse(request.body.read))
 
     "ok"
   end
