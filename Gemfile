@@ -4,14 +4,15 @@ ruby "2.0.0"
 gem "haml"
 gem "sass"
 gem "sinatra"
-gem "multi_json"
 gem "bootstrap-sass"
 gem "rake"
+gem "sequel"
 
 group :development do
   gem "thin"
   gem "byebug"
   gem "sinatra-contrib"
+  gem "sqlite3"
 end
 
 group :production do

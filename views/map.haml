@@ -1,6 +1,6 @@
 :javascript
   $(function() { 
-    EncryptedLocations.decryptAll(#{MultiJson.dump @locations})
+    EncryptedLocations.decryptAll(#{@locations.to_json})
       .done(function(locations) {
         new CarGuard(locations).render()
       }).fail(function() {

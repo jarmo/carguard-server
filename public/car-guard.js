@@ -20,9 +20,6 @@ var CarGuard = function(locations) {
     if (!locations.length) return
 
     var markers = _(locations).chain()
-      .select(function(location) {
-        return location.fixTime >= new Date().getTime() - 48 * 60 * 60 * 1000
-      })
       .sortBy(function(location) {
         return location.fixTime
       })
@@ -55,7 +52,14 @@ var CarGuard = function(locations) {
 
       map.panTo(marker.getPosition())
       marker.setMap(map)
-      $("#locations ul").append($("<li>").addClass("location").data("marker", marker).append($("<a>").attr("href", "#").text(new Date(marker.location.fixTime) + " - " + marker.location.latitude + ", " + marker.location.longitude)))
+      $("#locations ul")
+        .append($("<li>")
+        .addClass("location")
+        .data("marker", marker)
+        .append($("<a>")
+        .attr("href", "#")
+        .text(new Date(marker.location.fixTime) + " - " + marker.location.latitude + ", " + marker.location.longitude)))
+
       renderMarkers(map, markers, ++index)
     }, 500)
   }
