@@ -1,6 +1,6 @@
 require "sequel"
 
-DB = Sequel.connect('sqlite:memory:')
+Sequel.connect(ENV["DATABASE_CONNECTION"] || "sqlite:memory:")
 
 Sequel::Model.plugin :timestamps
 Sequel::Model.plugin :schema
