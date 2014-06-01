@@ -31,8 +31,8 @@ class CarGuard < Sinatra::Base
     haml :index
   end
 
-  get "/styles.css" do
-    scss :styles
+  get "/car-guard.css" do
+    scss :car_guard
   end
 
   private
