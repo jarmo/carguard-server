@@ -56,11 +56,16 @@ var CarGuard = function(locations) {
       location: {
         html: function(params) {
           $(params.element).data("marker", this)
+        },
+        fixTime: {
+          text: function() {
+            return strftime("%d.%m %H:%M", new Date(this.fixTime))
+          }
         }
       }
     }
 
-    $("#locations ul").render(markers, directives)
+    $("#locations ul").render(_(markers).reverse(), directives)
   }
 
   function renderMarkers(map, markers, index) {
