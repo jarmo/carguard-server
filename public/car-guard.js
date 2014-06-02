@@ -27,7 +27,12 @@ var CarGuard = function(locations) {
         return new google.maps.Marker({
           position: {lat: location.latitude, lng: location.longitude},
           animation: google.maps.Animation.DROP,
-          title: JSON.stringify(_(location).extend({fixTime: new Date(location.fixTime)})),
+          title: JSON.stringify({
+            date: new Date(location.fixTime),
+            speed: location.speed,
+            latitude: location.latitude,
+            longitude: location.longitude
+          }),
           location: location
         })
       }).value()
@@ -40,9 +45,22 @@ var CarGuard = function(locations) {
       });
     }
 
+    renderMarkersList(markers)
     renderMarkers(map, markers, 0)
 
     return markers
+  }
+
+  function renderMarkersList(markers) {
+    var directives = {
+      location: {
+        html: function(params) {
+          $(params.element).data("marker", this)
+        }
+      }
+    }
+
+    $("#locations ul").render(markers, directives)
   }
 
   function renderMarkers(map, markers, index) {
@@ -52,14 +70,6 @@ var CarGuard = function(locations) {
 
       map.panTo(marker.getPosition())
       marker.setMap(map)
-      $("#locations ul")
-        .append($("<li>")
-        .addClass("location")
-        .data("marker", marker)
-        .append($("<a>")
-        .attr("href", "#")
-        .text(new Date(marker.location.fixTime) + " - " + marker.location.latitude + ", " + marker.location.longitude)))
-
       renderMarkers(map, markers, ++index)
     }, 500)
   }
