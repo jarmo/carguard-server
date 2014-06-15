@@ -60,13 +60,15 @@ var CarGuard = function() {
           location: location
         })
       }).value()
-    
-    var lastMarker = _(markers).last()
+   
+    if (!self.locations.length) {
+      var lastMarker = _(markers).last()
 
-    if (lastMarker) {
-      lastMarker.setIcon({
-        url: "http://mt.googleapis.com/vt/icon/name=icons/spotlight/spotlight-poi.png&scale=1.3"
-      });
+      if (lastMarker) {
+        lastMarker.setIcon({
+          url: "http://mt.googleapis.com/vt/icon/name=icons/spotlight/spotlight-poi.png&scale=1.3"
+        });
+      }
     }
 
     renderMarkersList(markers)
