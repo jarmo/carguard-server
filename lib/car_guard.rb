@@ -19,24 +19,35 @@ class CarGuard < Sinatra::Base
     haml :index
   end
 
+  get "/map/:api_key" do
+    @api_key = params[:api_key]
+    haml :index
+  end
+
   post "/map/:api_key" do
     Location.create(JSON.parse(request.body.read).merge(api_key: params[:api_key]))
 
     "ok"
   end
 
-  get "/map" do
-    Location[api_key: params[:api_key]] ? redirect(to("/map/#{params[:api_key]}")) : halt(404)    
-  end
+  get "/locations/:api_key/?:to?" do
+    search_params = {api_key: params[:api_key]}
 
-  get "/map/:api_key" do
-    @locations = Location.
-      where(
-        api_key: params[:api_key],
-        created_at: (Time.now - 2 * 24 * 60 * 60)..Time.now).
-      to_json(except: :api_key)
-
-    haml :map
+    if params[:to]
+      Location.
+        where(search_params).
+        where("created_at < ?", Time.at(params[:to].to_i / 1000)).
+        order(:created_at).
+        reverse.first(5).to_json(except: :api_key)
+    else
+      [
+        Location.
+          where(search_params).
+          order(:created_at).
+          reverse.
+          first
+      ].compact.to_json(except: :api_key)
+    end
   end
 
   get "/car-guard.css" do

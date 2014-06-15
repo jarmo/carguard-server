@@ -1,21 +1,19 @@
 var EncryptedLocations = {
-  decryptAll: function(locations) {
+  decryptAll: function(locations, password) {
     var dfd = $.Deferred()
 
-    askForPassword().done(function(password) {
-      new Parallel(locations, {evalPath: "/vendor/eval.js", maxWorkers: 8, env: {password: password}})
-        .require("/vendor/crypto-js/aes.js")
-        .require("/vendor/crypto-js/pbkdf2.js")
-        .require("//underscorejs.org/underscore-min.js")
-        .require(decrypt)
-        .require(generateKey).map(function(location) {
-        try {
-          var decrypted = JSON.parse(decrypt(location.salt, location.iv, global.env.password, location.data))
-          return _({created_at: location.created_at}).extend(decrypted)
-        } catch (ignored) {}
-      }).then(function(decryptedLocations) {
-        _(decryptedLocations).compact().length ? dfd.resolve(decryptedLocations) : dfd.reject()
-      })
+    new Parallel(locations, {evalPath: "/vendor/eval.js", maxWorkers: 8, env: {password: password}})
+      .require("/vendor/crypto-js/aes.js")
+      .require("/vendor/crypto-js/pbkdf2.js")
+      .require("//underscorejs.org/underscore-min.js")
+      .require(decrypt)
+      .require(generateKey).map(function(location) {
+      try {
+        var decrypted = JSON.parse(decrypt(location.salt, location.iv, global.env.password, location.data))
+        return _({created_at: location.created_at}).extend(decrypted)
+      } catch (ignored) {}
+    }).then(function(decryptedLocations) {
+      _(decryptedLocations).compact().length ? dfd.resolve(decryptedLocations) : dfd.reject()
     })
 
     return dfd

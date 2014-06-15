@@ -1,22 +1,46 @@
-var CarGuard = function(locations) {
-  this.render = function() {
-    var latestLocation = locations[0] && {lat: locations[0].latitude, lng: locations[0].longitude}
+var CarGuard = function() {
+  this.locations = []
 
-    var mapOptions = {
-      center: latestLocation || new google.maps.LatLng(59.436961, 24.753575),
-      zoom: latestLocation ? 14 : 12
-    }
-
-    var map = new google.maps.Map($("#map")[0], mapOptions)
-    var markers = addRoute(map, locations)
-
-    $("#locations").on("click", ".location", function(event) {
-      event.preventDefault()
-      bounce(map, $(event.target).closest("li").data("marker"))
-    })
+  var mapOptions = {
+    center: new google.maps.LatLng(59.436961, 24.753575),
+    zoom: 14
   }
 
-  function addRoute(map, locations) {
+  var map = new google.maps.Map($("#map")[0], mapOptions)
+
+  $("#locations").on("click", ".location", function(event) {
+    event.preventDefault()
+    bounce(map, $(event.target).closest("li").data("marker"))
+  })    
+
+  var self = this
+
+  this.render = function(apiKey, secret, latestLocationTime) {
+    var dfd = $.Deferred()
+    var self = this
+
+    var locationsUrl = "/locations/" + apiKey
+    if (latestLocationTime) locationsUrl += "/" + new Date(latestLocationTime).getTime()
+
+    $.getJSON(locationsUrl)
+      .done(function(locations) {
+        EncryptedLocations.decryptAll(locations, secret).done(function(locations) {
+          dfd.resolve()
+          addRoute(locations)
+          self.locations = self.locations.concat(locations)
+        }).fail(function() { dfd.reject() })
+      })
+
+    $("#show-more").one("click", function(event) {
+      event.preventDefault()
+
+      self.render(apiKey, secret, _(self.locations).last().created_at)
+    })
+
+    return dfd
+  }
+
+  function addRoute(locations) {
     if (!locations.length) return
 
     var markers = _(locations).chain()
@@ -47,8 +71,6 @@ var CarGuard = function(locations) {
 
     renderMarkersList(markers)
     renderMarkers(map, markers, 0)
-
-    return markers
   }
 
   function renderMarkersList(markers) {
@@ -65,7 +87,7 @@ var CarGuard = function(locations) {
       }
     }
 
-    $("#locations ul").render(_(markers).reverse(), directives)
+    $("#locations ul").append($("#locations-template").clone().render(_(markers).reverse(), directives).find("li"))
   }
 
   function renderMarkers(map, markers, index) {
