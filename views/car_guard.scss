@@ -2,5 +2,19 @@
 
 html { height: 100% }
 body { height: 100%; margin: 0; padding: 0 }
-#map { height: 100%; width: 73%; display: inline-block; }
-#locations { width: 26%; display: inline-block; vertical-align: top; }
+#map { height: 100%; width: 100%; }
+
+#wrap {
+  padding: 0;
+  min-height: 100%;
+  height: 100%;
+}
+
+.navbar-form {
+  text-align: center;
+
+  .api-key { width: 380px; }
+  .secret { width: 120px; }  
+
+  input, button { margin: 0 5px; }
+}

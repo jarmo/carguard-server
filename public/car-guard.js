@@ -35,7 +35,7 @@ var CarGuard = function() {
       event.preventDefault()
 
       self.render(apiKey, secret, _(self.locations).last().created_at)
-    })
+    }).removeClass("hidden")
 
     return dfd
   }

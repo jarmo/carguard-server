@@ -1,30 +1,29 @@
 :javascript
   $(function() {
-    $carGuard = new CarGuard()
+    var carGuard = new CarGuard()
 
     $("form").submit(function(ev) {
       ev.preventDefault()
       var form = $(this)
-      $carGuard.render(form.find(".api-key").val(), form.find(".secret").val()).done(function() {
-        form.closest(".row").slideUp()        
+      carGuard.render(form.find(".api-key").val(), form.find(".secret").val()).done(function() {
+        form.closest(".navbar").fadeOut(function() { $(this).remove() })
       }).fail(function() { alert("wrong API key and/or secret!")})
     })
   })
-.container
-  .row
-    %form(action="/map" method="GET")
-      .form-group
-        .col-md-8
+
+.navbar.navbar-default.navbar-fixed-top
+  .container
+    .collapse.navbar-collapse
+      %form.navbar-form
+        .form-group
           %input.form-control.input-lg.api-key(type="text" placeholder="API key" value="#{@api_key}")
-        .col-md-2
           %input.form-control.input-lg.secret(type="password" placeholder="secret")
-        .col-md-2
-          %button.input-lg.btn.btn-default(type="submit") Track
+        %button.input-lg.btn.btn-default(type="submit") Track      
 
 #map
-#locations
+#locations.hidden
   %ul
-  %a#show-more(href="#") Show more
+  %a#show-more.hidden(href="#") Show more
 
 %ul#locations-template.hidden
   %li.location
