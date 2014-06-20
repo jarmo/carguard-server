@@ -35,7 +35,7 @@ var CarGuard = function() {
       event.preventDefault()
 
       self.render(apiKey, secret, _(self.locations).last().created_at)
-    }).removeClass("hidden")
+    })
 
     return dfd
   }
@@ -57,7 +57,7 @@ var CarGuard = function() {
             latitude: location.latitude,
             longitude: location.longitude
           }),
-          location: location
+          location: _(location).extend({latitude: location.latitude.toFixed(8), longitude: location.longitude.toFixed(8)})
         })
       }).value()
    
@@ -83,12 +83,13 @@ var CarGuard = function() {
         },
         fixTime: {
           text: function() {
-            return strftime("%d.%m %H:%M", new Date(this.fixTime))
+            return strftime("%H:%M %d.%m", new Date(this.fixTime))
           }
         }
       }
     }
 
+    $("#wrap").addClass("with-locations")
     $("#locations ul").append($("#locations-template").clone().render(_(markers).reverse(), directives).find("li"))
   }
 

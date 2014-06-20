@@ -21,13 +21,14 @@
         %button.input-lg.btn.btn-default(type="submit") Track      
 
 #map
-#locations.hidden
+#locations
+  %span.glyphicon.glyphicon-list
   %ul
-  %a#show-more.hidden(href="#") Show more
 
 %ul#locations-template.hidden
   %li.location
-    %a(href="#")
+    %a.icon(href="#")
+    %span.data
       %span.fixTime
       %span
         %span.longitude
