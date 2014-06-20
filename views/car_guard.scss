@@ -1,7 +1,7 @@
 @import "bootstrap";
 
 html { height: 100% }
-body { height: 100%; margin: 0; padding: 0 }
+body { height: 100%; margin: 0; padding: 0; font-family: 'Roboto', sans-serif; }
 #map { height: 100%; width: 100%; }
 
 $locations-width: 285;
@@ -57,30 +57,24 @@ $locations-extra-padding: 10;
   display: none;
   transition: all .4s ease 0s;
 
-  .glyphicon {
-    font-size: 18px;
+  i {
+    font-size: 20px;
   }
 
   ul {
     list-style: none;
     padding: 5px 0;
-
-    .data { margin-left: 1px; }
   }
 
   .icon {
-    background: url(http://mt.googleapis.com/vt/icon/name=icons/spotlight/spotlight-poi.png&scale=0.6) no-repeat;
-    width: 13px;
-    height: 24px;
     display: inline-block;
     vertical-align: middle;
-    margin: 0 3px;
   }
 
-  #show-location-details {
+  a {
     color: black;
-    transition: all .3s ease 0s;
-    padding-right: 3px;
+    transition: color .25s ease-in-out;
+    padding-right: 5px;
 
     &:hover {
       text-decoration: none;

@@ -24,13 +24,17 @@
   #map
   #locations
     %a#show-location-details(href="#")
-      %span.glyphicon.glyphicon-list
-    locations
+      %i.fa.fa-navicon
+    details
     %ul
+    %a#show-more
+      %i.fa.fa-history
+
 
   %ul#locations-template.hidden
     %li.location
       %a.icon(href="#")
+        %i.fa.fa-location-arrow
       %span.data
         %span.fixTime
         %span
