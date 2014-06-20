@@ -20,16 +20,17 @@
           %input.form-control.input-lg.secret(type="password" placeholder="secret")
         %button.input-lg.btn.btn-default(type="submit") Track      
 
-#map
-#locations
-  %span.glyphicon.glyphicon-list
-  %ul
+.container
+  #map
+  #locations
+    %span.glyphicon.glyphicon-list
+    %ul
 
-%ul#locations-template.hidden
-  %li.location
-    %a.icon(href="#")
-    %span.data
-      %span.fixTime
-      %span
-        %span.longitude
-        %span.latitude
+  %ul#locations-template.hidden
+    %li.location
+      %a.icon(href="#")
+      %span.data
+        %span.fixTime
+        %span
+          %span.longitude
+          %span.latitude
