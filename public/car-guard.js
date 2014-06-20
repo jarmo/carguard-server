@@ -8,10 +8,15 @@ var CarGuard = function() {
 
   var map = new google.maps.Map($("#map")[0], mapOptions)
 
-  $("#locations").on("click", ".location", function(event) {
+  $("#locations").on("click", ".icon", function(event) {
     event.preventDefault()
     bounce(map, $(event.target).closest("li").data("marker"))
   })    
+
+  $("#show-location-details").on("click", function(event) {
+    event.preventDefault()
+    $("#wrap").toggleClass("with-location-details")
+  })
 
   var self = this
 
@@ -33,7 +38,6 @@ var CarGuard = function() {
 
     $("#show-more").one("click", function(event) {
       event.preventDefault()
-
       self.render(apiKey, secret, _(self.locations).last().created_at)
     })
 
@@ -89,8 +93,8 @@ var CarGuard = function() {
       }
     }
 
-    $("#wrap").addClass("with-locations")
     $("#locations ul").append($("#locations-template").clone().render(_(markers).reverse(), directives).find("li"))
+    $("#wrap").addClass("with-locations")
   }
 
   function renderMarkers(map, markers, index) {

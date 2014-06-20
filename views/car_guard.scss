@@ -4,23 +4,33 @@ html { height: 100% }
 body { height: 100%; margin: 0; padding: 0 }
 #map { height: 100%; width: 100%; }
 
-$locations-width: 300;
-$locations-width-closed: 40;
+$locations-width: 285;
+$locations-width-closed: 35;
+$locations-extra-padding: 10;
 
 #wrap {
   padding: 0;
-  padding-right: $locations-width-closed + px;
   height: 100%;
+  transition: all .4s ease 0s;
 
   &.with-locations {
-    padding-right: $locations-width - 10 + px;
-    transition: all .4s ease 0s;
+    padding-right: $locations-width-closed + px;
 
     > .container {
       padding: 0;
     }
 
-    #locations { top: 5px; }
+    #locations {
+      display: block;
+    }
+  }
+
+  &.with-location-details {
+    padding-right: $locations-width + $locations-extra-padding + px;
+
+    #locations {
+      right: $locations-width - $locations-width-closed + $locations-extra-padding + px;
+    }
   }
 
   > .container {
@@ -32,19 +42,20 @@ $locations-width-closed: 40;
 
 .navbar-form {
   text-align: center;
-
   .api-key { width: 380px; }
   .secret { width: 120px; }  
-
   input, button { margin: 0 5px; }
 }
 
 #locations {
   position: fixed;
   right: 0;
-  top: 68px;
+  top: 5px;
   z-index: 10000;
-  margin-right: 10px;
+  margin-right: -$locations-width + $locations-width-closed - $locations-extra-padding + px;
+  width: $locations-width + px;
+  display: none;
+  transition: all .4s ease 0s;
 
   .glyphicon {
     font-size: 18px;
@@ -52,7 +63,9 @@ $locations-width-closed: 40;
 
   ul {
     list-style: none;
-    padding: 0;
+    padding: 5px 0;
+
+    .data { margin-left: 1px; }
   }
 
   .icon {
@@ -61,6 +74,6 @@ $locations-width-closed: 40;
     height: 24px;
     display: inline-block;
     vertical-align: middle;
-    margin-left: 2px;
+    margin: 0 3px;
   }
 }
