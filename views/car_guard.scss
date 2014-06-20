@@ -64,17 +64,15 @@ $locations-extra-padding: 10;
   ul {
     list-style: none;
     padding: 5px 0;
-  }
-
-  .icon {
-    display: inline-block;
-    vertical-align: middle;
+    margin-bottom: 0px;
   }
 
   a {
     color: black;
     transition: color .25s ease-in-out;
     padding-right: 5px;
+    display: inline-block;
+    vertical-align: middle;
 
     &:hover {
       text-decoration: none;
