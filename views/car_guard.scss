@@ -76,4 +76,15 @@ $locations-extra-padding: 10;
     vertical-align: middle;
     margin: 0 3px;
   }
+
+  #show-location-details {
+    color: black;
+    transition: all .3s ease 0s;
+    padding-right: 3px;
+
+    &:hover {
+      text-decoration: none;
+      color: #428bca;
+    }
+  }
 }
