@@ -8,7 +8,17 @@ $locations-width: 285;
 $locations-width-closed: 35;
 $locations-extra-padding: 10;
 
+@mixin bg-color($opacity) {
+  background-color: rgba(39, 35, 35, $opacity);  
+}
+
+.navbar-default {
+  @include bg-color(0);
+  border: 0;
+}
+
 #wrap {
+  @include bg-color(0.79);
   padding: 0;
   height: 100%;
   transition: all .4s ease 0s;
@@ -67,8 +77,10 @@ $locations-extra-padding: 10;
     margin-bottom: 0px;
   }
 
+  color: white;
+
   a {
-    color: black;
+    color: white;
     transition: color .25s ease-in-out;
     padding-right: 5px;
     display: inline-block;
