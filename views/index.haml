@@ -5,7 +5,9 @@
     $("form").submit(function(ev) {
       ev.preventDefault()
       var form = $(this)
-      carGuard.render(form.find(".api-key").val(), form.find(".secret").val()).done(function() {
+      var apiKey = form.find(".api-key").val()
+      carGuard.render(apiKey, form.find(".secret").val()).done(function() {
+        history.pushState({}, "", "/map/" + apiKey)
         form.closest(".navbar").fadeOut(function() { $(this).remove() })
       }).fail(function() { alert("wrong API key and/or secret!")})
     })
