@@ -51,17 +51,18 @@ var CarGuard = function() {
       .sortBy(function(location) {
         return location.fixTime
       })
-      .map(function(location, i) {
+      .map(function(location) {
+        var formattedLocation = _({}).extend(location, {
+          latitude: location.latitude.toFixed(5),
+          longitude: location.longitude.toFixed(5),
+          date: new Date(location.fixTime)
+        })
+
         return new google.maps.Marker({
           position: {lat: location.latitude, lng: location.longitude},
           animation: google.maps.Animation.DROP,
-          title: JSON.stringify({
-            date: new Date(location.fixTime),
-            speed: location.speed,
-            latitude: location.latitude,
-            longitude: location.longitude
-          }),
-          location: _(location).extend({latitude: location.latitude.toFixed(8), longitude: location.longitude.toFixed(8)})
+          title: JSON.stringify(formattedLocation),
+          location: formattedLocation
         })
       }).value()
    
@@ -87,7 +88,7 @@ var CarGuard = function() {
         },
         fixTime: {
           text: function() {
-            return strftime("%H:%M %d.%m", new Date(this.fixTime))
+            return strftime("%H:%M %d.%m", this.date)
           }
         }
       }
