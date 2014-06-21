@@ -55,6 +55,7 @@ var CarGuard = function() {
         var formattedLocation = _({}).extend(location, {
           latitude: location.latitude.toFixed(5),
           longitude: location.longitude.toFixed(5),
+          speed: (location.speed / 1000 * 3600).toFixed(1) + " km/h",
           date: new Date(location.fixTime)
         })
 
