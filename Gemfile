@@ -7,6 +7,8 @@ gem "sinatra"
 gem "bootstrap-sass"
 gem "rake"
 gem "sequel"
+gem "rufus-scheduler"
+gem "mail"
 
 group :development do
   gem "thin"
