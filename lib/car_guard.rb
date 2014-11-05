@@ -64,8 +64,17 @@ class CarGuard < Sinatra::Base
   post "/map/:api_key" do
     user = User.find(api_key: params[:api_key])
     halt 404 unless user
+    
+    location_parameters = JSON.parse(request.body.read)
+    hasLowBattery = location_parameters.delete("hasLowBattery")
 
-    user.add_location JSON.parse(request.body.read)
+    user.add_location location_parameters
+
+    if !user.last_alert_time && hasLowBattery 
+      Emailer.low_battery_alert(user.email, user.api_key)
+    elsif user.last_alert_time && !hasLowBattery
+      Emailer.low_battery_alert_restore(user.email, user.api_key)
+    end
 
     "ok"
   end
