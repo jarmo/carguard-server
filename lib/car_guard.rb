@@ -9,6 +9,7 @@ require File.expand_path("emailer", __dir__)
 require File.expand_path("database", __dir__)
 require File.expand_path("user", __dir__)
 require File.expand_path("location", __dir__)
+require File.expand_path("alert", __dir__)
 
 class CarGuard < Sinatra::Base
   configure do
@@ -21,13 +22,13 @@ class CarGuard < Sinatra::Base
         last_location = user.locations_dataset.order(:created_at).last
         next unless last_location
 
-        if !user.last_alert_time && last_location.created_at <= expired_communication_time
+        communication_alert = user.alerts_dataset.first(type: Alert::TYPE_COMMUNICATION)
+
+        if !communication_alert && last_location.created_at <= expired_communication_time
           Emailer.alert(user.email, user.api_key)
-          user.last_alert_time = Time.now
-          user.save
-        elsif user.last_alert_time && last_location.created_at > expired_communication_time
-          user.last_alert_time = nil
-          user.save
+          user.add_alert(type: Alert::TYPE_COMMUNICATION)
+        elsif communication_alert && last_location.created_at > expired_communication_time
+          communication_alert.delete
           Emailer.alert_restore(user.email, user.api_key)
         end
       end
@@ -66,13 +67,17 @@ class CarGuard < Sinatra::Base
     halt 404 unless user
     
     location_parameters = JSON.parse(request.body.read)
-    hasLowBattery = location_parameters.delete("hasLowBattery")
+    low_battery = location_parameters.delete("lowBattery")
 
     user.add_location location_parameters
 
-    if !user.last_alert_time && hasLowBattery 
+    low_battery_alert = user.alerts_dataset.first(type: Alert::TYPE_LOW_BATTERY)
+
+    if !low_battery_alert && low_battery 
       Emailer.low_battery_alert(user.email, user.api_key)
-    elsif user.last_alert_time && !hasLowBattery
+      user.add_alert(type: Alert::TYPE_LOW_BATTERY)
+    elsif low_battery_alert && !low_battery
+      low_battery_alert.delete
       Emailer.low_battery_alert_restore(user.email, user.api_key)
     end
 

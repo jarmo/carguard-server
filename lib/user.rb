@@ -3,7 +3,6 @@ class User < Sequel::Model
     String :api_key, null: false, unique: true
     String :email, null: false
     String :phone
-    DateTime :last_alert_time
     DateTime :created_at
 
     primary_key :id
@@ -11,6 +10,7 @@ class User < Sequel::Model
   end
 
   one_to_many :locations
+  one_to_many :alerts
 
   create_table if !table_exists?
 end

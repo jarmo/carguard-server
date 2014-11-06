@@ -5,6 +5,7 @@ class Location < Sequel::Model
     String :salt, null: false
     DateTime :created_at
 
+    primary_key :id
     foreign_key :user_id, :users
 
     index :created_at
