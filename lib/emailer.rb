@@ -15,7 +15,7 @@ Check out last communication at http://carguard.me/map/#{api_key}")
     end
 
     def low_battery_alert(email, api_key)
-      send(email, "Low Battery", "Your Android device seems to have a low battery. Do something quick!
+      send(email, "Low Battery", "Your Android device seems to have a low battery. Do something!
 
 Check out last communication at http://carguard.me/map/#{api_key}")
     end
