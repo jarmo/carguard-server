@@ -48,7 +48,7 @@ PS! Make sure to write down secret from your phone - otherwise locations are not
         }
 
         to email
-        from "no-reply@carguard.me"
+        from "CarGuard <no-reply@carguard.me>"
         subject subject
         body body
       end
