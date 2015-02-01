@@ -5,7 +5,7 @@ var EncryptedLocations = {
     new Parallel(locations, {evalPath: "/vendor/eval.js", maxWorkers: 8, env: {password: password}})
       .require("/vendor/crypto-js/aes.js")
       .require("/vendor/crypto-js/pbkdf2.js")
-      .require("//underscorejs.org/underscore-min.js")
+      .require("/vendor/underscore-min.js")
       .require(decrypt)
       .require(generateKey).map(function(location) {
       try {

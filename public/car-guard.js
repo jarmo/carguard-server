@@ -72,7 +72,7 @@ var CarGuard = function() {
 
       if (lastMarker) {
         lastMarker.setIcon({
-          url: "http://mt.googleapis.com/vt/icon/name=icons/spotlight/spotlight-poi.png&scale=1.3"
+          url: "//mt.googleapis.com/vt/icon/name=icons/spotlight/spotlight-poi.png&scale=1.3"
         });
       }
     }

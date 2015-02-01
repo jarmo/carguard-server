@@ -39,12 +39,7 @@ PS! Make sure to write down secret from your phone - otherwise locations are not
     def send(email, subject, body)
       ::Mail.deliver do
         delivery_method :smtp, {
-          address: "smtp.mandrillapp.com",
-          domain: "heroku.com", 
-          port: 587,
-          enable_ssl: true,
-          user_name: ENV["MANDRILL_USERNAME"],
-          password: ENV["MANDRILL_APIKEY"]
+          openssl_verify_mode: "none"
         }
 
         to email

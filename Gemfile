@@ -9,6 +9,7 @@ gem "rake"
 gem "sequel"
 gem "rufus-scheduler"
 gem "mail"
+gem "dotenv"
 
 group :development do
   gem "thin"
