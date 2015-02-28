@@ -13,14 +13,16 @@ end
 
 desc "Deploy to server"
 task :deploy do
-  sh %Q[git ls-files | rsync --delete --delete-excluded --prune-empty-dirs --exclude Rakefile --files-from - -avzhe ssh ./ jarmopertman.com:/home/jarmo/www/#{app_name}]
-  Rake::Task[:restart].invoke if app?
+  sh %Q[git ls-files | rsync --delete --delete-excluded --prune-empty-dirs --files-from - -avzhe ssh ./ jarmopertman.com:/home/jarmo/www/#{app_name}]
+  if app?
+    sh %Q[ssh jarmopertman.com "source ~/.bashrc && cd ~/www/#{app_name} && bundle install --quiet --without development && bundle exec rake restart"]
+  end
 end
 
 if app?
   desc "Restart app"
   task :restart do
-    sh %Q[ssh jarmopertman.com "source /usr/local/share/chruby/chruby.sh && cd www/#{app_name} && chruby ruby-`fgrep "ruby " Gemfile | awk -F'"' '{ print $2 }'` && if [ -f #{app_name}.pid ]; then kill -9 \\$(cat #{app_name}.pid) || echo "#{app_name} was not running..."; rm #{app_name}.pid; fi && bundle install && sh -c 'RACK_ENV=production nohup bundle exec rackup -s puma -o 127.0.0.1 -P #{app_name}.pid 1>>#{app_name}.log 2>&1 &'"]
+    sh %Q[if [ -f #{app_name}.pid ]; then kill -9 \$(cat #{app_name}.pid) 2>/dev/null || echo "#{app_name} was not running..."; rm #{app_name}.pid; fi && sh -c 'RACK_ENV=production nohup bundle exec rackup -s puma -o 127.0.0.1 -P #{app_name}.pid 1>>#{app_name}.log 2>&1 &']
   end
 end
 
