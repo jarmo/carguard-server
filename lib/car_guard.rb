@@ -40,7 +40,7 @@ class CarGuard < Sinatra::Base
 
   configure :development do
     require "sinatra/reloader"
-    register Sinatra::Reloader
+    register ::Sinatra::Reloader
 
     set :port, 7500
     set :bind, "0.0.0.0"
