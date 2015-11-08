@@ -15,7 +15,7 @@ desc "Deploy to server"
 task :deploy do
   sh %Q[git ls-files | rsync --delete --delete-excluded --prune-empty-dirs --files-from - -avzhe ssh ./ #{ENV["SERVER"]}:www/#{app_name}]
   if app?
-    sh %Q[ssh #{ENV["SERVER"]} "source ~/.bashrc && cd ~/www/#{app_name} && bundle install --quiet --without development && bundle exec rake restart"]
+    sh %Q[ssh #{ENV["SERVER"]} "source /etc/profile && cd ~/www/#{app_name} && bundle install --quiet --without development && bundle exec rake restart"]
   end
 end
 
